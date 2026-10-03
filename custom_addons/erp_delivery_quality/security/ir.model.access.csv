@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_erp_quality_criterion_user,erp.quality.criterion.user,model_erp_quality_criterion,erp_delivery.group_erp_delivery_user,1,0,0,0
+access_erp_quality_criterion_manager,erp.quality.criterion.manager,model_erp_quality_criterion,erp_delivery.group_erp_delivery_manager,1,1,1,1
+access_erp_quality_assessment_consultant,erp.quality.assessment.consultant,model_erp_quality_assessment,erp_delivery.group_erp_delivery_consultant,1,1,1,1
+access_erp_quality_assessment_manager,erp.quality.assessment.manager,model_erp_quality_assessment,erp_delivery.group_erp_delivery_manager,1,1,1,1

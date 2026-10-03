@@ -1,0 +1,27 @@
+<odoo>
+    <record id="view_project_project_form_erp_delivery_quality" model="ir.ui.view">
+        <field name="name">project.project.form.erp.delivery.quality</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="erp_delivery.view_project_project_form_erp_delivery"/>
+        <field name="arch" type="xml">
+            <group name="erp_delivery_left" position="inside">
+                <field name="quality_score" readonly="1"/>
+                <field name="quality_threshold" groups="erp_delivery.group_erp_delivery_manager"/>
+                <field name="is_quality_gate_passed" widget="boolean_toggle" readonly="1"/>
+            </group>
+            <page name="erp_notes" position="before">
+                <page name="erp_quality" string="Quality" invisible="not is_erp_delivery">
+                    <field name="quality_assessment_ids">
+                        <list editable="bottom">
+                            <field name="criterion_id"/>
+                            <field name="score"/>
+                            <field name="assessed_by"/>
+                            <field name="assessed_date"/>
+                            <field name="note"/>
+                        </list>
+                    </field>
+                </page>
+            </page>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,27 @@
+<odoo>
+    <record id="view_erp_quality_criterion_list" model="ir.ui.view">
+        <field name="name">erp.quality.criterion.list</field>
+        <field name="model">erp.quality.criterion</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="category"/>
+                <field name="weight"/>
+                <field name="active" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_erp_quality_criterion" model="ir.actions.act_window">
+        <field name="name">Quality Criteria</field>
+        <field name="res_model">erp.quality.criterion</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <menuitem id="menu_erp_quality_criterion"
+              name="Quality Criteria"
+              parent="erp_delivery.menu_erp_delivery_configuration"
+              action="action_erp_quality_criterion"
+              sequence="30"/>
+</odoo>

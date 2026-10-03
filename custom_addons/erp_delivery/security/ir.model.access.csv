@@ -1,0 +1,15 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_erp_solution_category_user,erp.solution.category.user,model_erp_solution_category,group_erp_delivery_user,1,0,0,0
+access_erp_solution_category_manager,erp.solution.category.manager,model_erp_solution_category,group_erp_delivery_manager,1,1,1,1
+access_erp_solution_user,erp.solution.user,model_erp_solution,group_erp_delivery_user,1,0,0,0
+access_erp_solution_manager,erp.solution.manager,model_erp_solution,group_erp_delivery_manager,1,1,1,1
+access_project_project_erp_consultant,project.project.erp.consultant,project.model_project_project,group_erp_delivery_consultant,1,1,0,0
+access_project_project_erp_manager,project.project.erp.manager,project.model_project_project,group_erp_delivery_manager,1,1,1,1
+access_erp_project_module_line_consultant,erp.project.module.line.consultant,model_erp_project_module_line,group_erp_delivery_consultant,1,1,1,1
+access_erp_project_module_line_manager,erp.project.module.line.manager,model_erp_project_module_line,group_erp_delivery_manager,1,1,1,1
+access_erp_risk_consultant,erp.risk.consultant,model_erp_risk,group_erp_delivery_consultant,1,1,1,1
+access_erp_risk_manager,erp.risk.manager,model_erp_risk,group_erp_delivery_manager,1,1,1,1
+access_project_milestone_erp_consultant,project.milestone.erp.consultant,project.model_project_milestone,group_erp_delivery_consultant,1,1,1,1
+access_project_milestone_erp_manager,project.milestone.erp.manager,project.model_project_milestone,group_erp_delivery_manager,1,1,1,1
+access_project_task_erp_consultant,project.task.erp.consultant,project.model_project_task,group_erp_delivery_consultant,1,1,1,1
+access_project_task_erp_manager,project.task.erp.manager,project.model_project_task,group_erp_delivery_manager,1,1,1,1

@@ -1,0 +1,10 @@
+<odoo>
+    <record id="cron_recompute_health" model="ir.cron">
+        <field name="name">ERP Delivery: Recompute Project Health</field>
+        <field name="model_id" ref="project.model_project_project"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_recompute_health()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+    </record>
+</odoo>

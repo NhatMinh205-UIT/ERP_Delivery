@@ -1,0 +1,21 @@
+<odoo>
+    <!-- No new groups: reuses erp_delivery.group_erp_delivery_consultant/
+         manager. Record rules mirror the pattern established in
+         erp_delivery (Sprint 3) for child records scoped via project_id. -->
+    <record id="rule_quality_assessment_consultant" model="ir.rule">
+        <field name="name">ERP Quality Assessment: Consultant sees own project's assessments</field>
+        <field name="model_id" ref="model_erp_quality_assessment"/>
+        <field name="groups" eval="[(4, ref('erp_delivery.group_erp_delivery_consultant'))]"/>
+        <field name="domain_force">
+            ['|', ('project_id.is_erp_delivery', '=', False), '|', ('project_id.user_id', '=', user.id), ('project_id.member_ids', 'in', [user.id])]
+        </field>
+    </record>
+    <record id="rule_quality_assessment_manager" model="ir.rule">
+        <field name="name">ERP Quality Assessment: Manager sees all within allowed companies</field>
+        <field name="model_id" ref="model_erp_quality_assessment"/>
+        <field name="groups" eval="[(4, ref('erp_delivery.group_erp_delivery_manager'))]"/>
+        <field name="domain_force">
+            ['|', ('project_id.is_erp_delivery', '=', False), ('project_id.company_id', 'in', company_ids)]
+        </field>
+    </record>
+</odoo>

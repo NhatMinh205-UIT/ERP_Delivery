@@ -1,0 +1,12 @@
+<odoo>
+    <!-- Sequence for project.project.code, consumed starting Sprint 2 when
+         project.project is extended with is_erp_delivery/code fields. -->
+    <record id="seq_erp_project" model="ir.sequence">
+        <field name="name">ERP Project Code</field>
+        <field name="code">erp.project.code</field>
+        <field name="prefix">ERP/%(year)s/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+        <field name="use_date_range">True</field>
+    </record>
+</odoo>

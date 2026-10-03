@@ -1,0 +1,57 @@
+{
+  "started_at": "2026-10-03T12:44:01.021846+07:00",
+  "tests": {
+    "core": {
+      "status": "PASS",
+      "customer_field_visible": true,
+      "expected_customer_field_visible": true,
+      "modules": [
+        "erp_delivery"
+      ],
+      "database": "erp_ui_matrix_core"
+    },
+    "core_sale": {
+      "status": "PASS",
+      "customer_field_visible": false,
+      "expected_customer_field_visible": false,
+      "modules": [
+        "erp_delivery",
+        "erp_delivery_sale"
+      ],
+      "database": "erp_ui_matrix_core_sale"
+    },
+    "core_quality": {
+      "status": "PASS",
+      "customer_field_visible": true,
+      "expected_customer_field_visible": true,
+      "modules": [
+        "erp_delivery",
+        "erp_delivery_quality"
+      ],
+      "database": "erp_ui_matrix_core_quality"
+    },
+    "all_sale_quality": {
+      "status": "PASS",
+      "customer_field_visible": false,
+      "expected_customer_field_visible": false,
+      "modules": [
+        "erp_delivery",
+        "erp_delivery_sale",
+        "erp_delivery_quality"
+      ],
+      "database": "erp_ui_matrix_all_sale_quality"
+    },
+    "all_quality_sale": {
+      "status": "PASS",
+      "customer_field_visible": false,
+      "expected_customer_field_visible": false,
+      "modules": [
+        "erp_delivery",
+        "erp_delivery_quality",
+        "erp_delivery_sale"
+      ],
+      "database": "erp_ui_matrix_all_quality_sale"
+    }
+  },
+  "finished_at": "2026-10-03T12:45:07.590865+07:00"
+}

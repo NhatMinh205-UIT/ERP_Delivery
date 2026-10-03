@@ -1,0 +1,10 @@
+<odoo>
+    <menuitem id="menu_erp_delivery_root" name="ERP Delivery" sequence="60"/>
+
+    <menuitem id="menu_erp_project" name="Projects" parent="menu_erp_delivery_root" action="action_erp_project" sequence="10"/>
+
+    <menuitem id="menu_erp_delivery_configuration" name="Configuration" parent="menu_erp_delivery_root" sequence="100"/>
+
+    <menuitem id="menu_erp_solution" name="Solutions" parent="menu_erp_delivery_configuration" action="action_erp_solution" sequence="10"/>
+    <menuitem id="menu_erp_solution_category" name="Solution Categories" parent="menu_erp_delivery_configuration" action="action_erp_solution_category" sequence="20"/>
+</odoo>

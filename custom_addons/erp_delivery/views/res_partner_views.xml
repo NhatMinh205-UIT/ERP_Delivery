@@ -1,0 +1,44 @@
+<odoo>
+    <record id="view_partner_form_erp_delivery" model="ir.ui.view">
+        <field name="name">res.partner.form.erp.delivery</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <page name="internal_notes" position="after">
+                <page name="erp_info" string="ERP Info" invisible="not is_erp_customer">
+                    <group>
+                        <group name="erp_info_left">
+                            <field name="erp_code"/>
+                            <field name="erp_tier"/>
+                            <field name="contract_end_date"/>
+                        </group>
+                        <group name="erp_info_right">
+                            <field name="expected_users"/>
+                            <field name="subscription_value" groups="erp_delivery.group_erp_delivery_manager"/>
+                        </group>
+                    </group>
+                    <field name="erp_project_ids" invisible="not is_erp_customer">
+                        <list>
+                            <field name="name"/>
+                            <field name="user_id"/>
+                        </list>
+                    </field>
+                </page>
+            </page>
+            <xpath expr="//field[@name='category_id'][1]" position="after">
+                <field name="is_erp_customer"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_partner_search_erp_delivery" model="ir.ui.view">
+        <field name="name">res.partner.search.erp.delivery</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+            <filter name="type_company" position="after">
+                <filter name="erp_customers" string="ERP Customers" domain="[('is_erp_customer', '=', True)]"/>
+            </filter>
+        </field>
+    </record>
+</odoo>

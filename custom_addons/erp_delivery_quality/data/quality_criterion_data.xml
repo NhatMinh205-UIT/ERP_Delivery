@@ -1,0 +1,26 @@
+<odoo noupdate="1">
+    <record id="quality_criterion_task_completion" model="erp.quality.criterion">
+        <field name="name">Task Completion Quality</field>
+        <field name="code">TASK_COMPLETION</field>
+        <field name="category">task</field>
+        <field name="weight">2.0</field>
+    </record>
+    <record id="quality_criterion_milestone_adherence" model="erp.quality.criterion">
+        <field name="name">Milestone Adherence</field>
+        <field name="code">MILESTONE_ADHERENCE</field>
+        <field name="category">milestone</field>
+        <field name="weight">1.5</field>
+    </record>
+    <record id="quality_criterion_risk_management" model="erp.quality.criterion">
+        <field name="name">Risk Management</field>
+        <field name="code">RISK_MANAGEMENT</field>
+        <field name="category">risk</field>
+        <field name="weight">1.5</field>
+    </record>
+    <record id="quality_criterion_commercial_alignment" model="erp.quality.criterion">
+        <field name="name">Commercial Alignment</field>
+        <field name="code">COMMERCIAL_ALIGNMENT</field>
+        <field name="category">commercial</field>
+        <field name="weight">1.0</field>
+    </record>
+</odoo>

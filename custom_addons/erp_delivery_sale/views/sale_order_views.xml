@@ -1,0 +1,21 @@
+<odoo>
+    <record id="view_order_form_erp_delivery_sale" model="ir.ui.view">
+        <field name="name">sale.order.form.erp.delivery.sale</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <field name="state" widget="statusbar" position="before">
+                <button name="action_create_erp_project" string="Create ERP Project" type="object"
+                        class="btn-primary" invisible="not is_erp_ready"/>
+            </field>
+            <div name="button_box" position="inside">
+                <button class="oe_stat_button" type="object" name="action_view_erp_project"
+                        icon="fa-tasks" invisible="not erp_project_id">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_text">ERP Project</span>
+                    </div>
+                </button>
+            </div>
+        </field>
+    </record>
+</odoo>

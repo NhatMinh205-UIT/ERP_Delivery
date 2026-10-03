@@ -1,0 +1,128 @@
+<odoo>
+    <record id="module_category_erp_delivery" model="ir.module.category">
+        <field name="name">ERP Delivery</field>
+        <field name="sequence">20</field>
+    </record>
+
+    <record id="group_erp_delivery_user" model="res.groups">
+        <field name="name">User</field>
+        <field name="category_id" ref="module_category_erp_delivery"/>
+    </record>
+
+    <record id="group_erp_delivery_consultant" model="res.groups">
+        <field name="name">Consultant</field>
+        <field name="category_id" ref="module_category_erp_delivery"/>
+        <field name="implied_ids" eval="[(4, ref('group_erp_delivery_user'))]"/>
+    </record>
+
+    <record id="group_erp_delivery_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="module_category_erp_delivery"/>
+        <field name="implied_ids" eval="[(4, ref('group_erp_delivery_consultant'))]"/>
+    </record>
+
+    <!-- project.project record rules. Every domain starts with
+         ('is_erp_delivery', '=', False) OR'd in: this leaves plain
+         (non-ERP) projects entirely governed by the standard `project`
+         module's own rules, since project.project is a shared model and
+         these rules would otherwise AND together with the ones below for
+         any user who happens to hold both an erp_delivery group and a
+         project.* group. -->
+    <record id="rule_project_consultant" model="ir.rule">
+        <field name="name">ERP Project: Consultant sees own projects</field>
+        <field name="model_id" ref="project.model_project_project"/>
+        <field name="groups" eval="[(4, ref('group_erp_delivery_consultant'))]"/>
+        <field name="domain_force">
+            ['|', ('is_erp_delivery', '=', False), '|', ('user_id', '=', user.id), ('member_ids', 'in', [user.id])]
+        </field>
+        <field name="perm_read">True</field>
+        <field name="perm_write">True</field>
+        <field name="perm_create">False</field>
+        <field name="perm_unlink">False</field>
+    </record>
+
+    <record id="rule_project_manager_multi_company" model="ir.rule">
+        <field name="name">ERP Project: Manager sees all within allowed companies</field>
+        <field name="model_id" ref="project.model_project_project"/>
+        <field name="groups" eval="[(4, ref('group_erp_delivery_manager'))]"/>
+        <field name="domain_force">
+            ['|', ('is_erp_delivery', '=', False), ('company_id', 'in', company_ids)]
+        </field>
+    </record>
+
+    <!-- Sprint 3: child records (module lines, tasks, milestones, risks) are
+         always accessed through their parent project, so each rule mirrors
+         the project.project rule above via a '.project_id' indirection,
+         with the same is_erp_delivery=False escape hatch for non-ERP
+         projects. Unlike the project.project rule, Consultants get
+         perm_create/perm_unlink here too: adding/removing module lines,
+         risks and milestones on a project they already manage is normal
+         day-to-day work, unlike creating a brand new top-level project. -->
+    <record id="rule_module_line_consultant" model="ir.rule">
+        <field name="name">ERP Module Line: Consultant sees own project's lines</field>
+        <field name="model_id" ref="model_erp_project_module_line"/>
+        <field name="groups" eval="[(4, ref('group_erp_delivery_consultant'))]"/>
+        <field name="domain_force">
+            ['|', ('project_id.is_erp_delivery', '=', False), '|', ('project_id.user_id', '=', user.id), ('project_id.member_ids', 'in', [user.id])]
+        </field>
+    </record>
+    <record id="rule_module_line_manager" model="ir.rule">
+        <field name="name">ERP Module Line: Manager sees all within allowed companies</field>
+        <field name="model_id" ref="model_erp_project_module_line"/>
+        <field name="groups" eval="[(4, ref('group_erp_delivery_manager'))]"/>
+        <field name="domain_force">
+            ['|', ('project_id.is_erp_delivery', '=', False), ('project_id.company_id', 'in', company_ids)]
+        </field>
+    </record>
+
+    <record id="rule_risk_consultant" model="ir.rule">
+        <field name="name">ERP Risk: Consultant sees own project's risks</field>
+        <field name="model_id" ref="model_erp_risk"/>
+        <field name="groups" eval="[(4, ref('group_erp_delivery_consultant'))]"/>
+        <field name="domain_force">
+            ['|', ('project_id.is_erp_delivery', '=', False), '|', ('project_id.user_id', '=', user.id), ('project_id.member_ids', 'in', [user.id])]
+        </field>
+    </record>
+    <record id="rule_risk_manager" model="ir.rule">
+        <field name="name">ERP Risk: Manager sees all within allowed companies</field>
+        <field name="model_id" ref="model_erp_risk"/>
+        <field name="groups" eval="[(4, ref('group_erp_delivery_manager'))]"/>
+        <field name="domain_force">
+            ['|', ('project_id.is_erp_delivery', '=', False), ('project_id.company_id', 'in', company_ids)]
+        </field>
+    </record>
+
+    <record id="rule_milestone_consultant" model="ir.rule">
+        <field name="name">ERP Milestone: Consultant sees own project's milestones</field>
+        <field name="model_id" ref="project.model_project_milestone"/>
+        <field name="groups" eval="[(4, ref('group_erp_delivery_consultant'))]"/>
+        <field name="domain_force">
+            ['|', ('project_id.is_erp_delivery', '=', False), '|', ('project_id.user_id', '=', user.id), ('project_id.member_ids', 'in', [user.id])]
+        </field>
+    </record>
+    <record id="rule_milestone_manager" model="ir.rule">
+        <field name="name">ERP Milestone: Manager sees all within allowed companies</field>
+        <field name="model_id" ref="project.model_project_milestone"/>
+        <field name="groups" eval="[(4, ref('group_erp_delivery_manager'))]"/>
+        <field name="domain_force">
+            ['|', ('project_id.is_erp_delivery', '=', False), ('project_id.company_id', 'in', company_ids)]
+        </field>
+    </record>
+
+    <record id="rule_task_consultant" model="ir.rule">
+        <field name="name">ERP Task: Consultant sees own project's tasks</field>
+        <field name="model_id" ref="project.model_project_task"/>
+        <field name="groups" eval="[(4, ref('group_erp_delivery_consultant'))]"/>
+        <field name="domain_force">
+            ['|', ('project_id.is_erp_delivery', '=', False), '|', ('project_id.user_id', '=', user.id), ('project_id.member_ids', 'in', [user.id])]
+        </field>
+    </record>
+    <record id="rule_task_manager" model="ir.rule">
+        <field name="name">ERP Task: Manager sees all within allowed companies</field>
+        <field name="model_id" ref="project.model_project_task"/>
+        <field name="groups" eval="[(4, ref('group_erp_delivery_manager'))]"/>
+        <field name="domain_force">
+            ['|', ('project_id.is_erp_delivery', '=', False), ('project_id.company_id', 'in', company_ids)]
+        </field>
+    </record>
+</odoo>

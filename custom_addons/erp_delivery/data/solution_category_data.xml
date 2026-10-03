@@ -1,0 +1,22 @@
+<odoo noupdate="1">
+    <record id="solution_category_sales" model="erp.solution.category">
+        <field name="name">Sales</field>
+        <field name="code">SALES</field>
+        <field name="sequence">10</field>
+    </record>
+    <record id="solution_category_ops" model="erp.solution.category">
+        <field name="name">Operations</field>
+        <field name="code">OPS</field>
+        <field name="sequence">20</field>
+    </record>
+    <record id="solution_category_finance" model="erp.solution.category">
+        <field name="name">Finance</field>
+        <field name="code">FINANCE</field>
+        <field name="sequence">30</field>
+    </record>
+    <record id="solution_category_hr" model="erp.solution.category">
+        <field name="name">HR</field>
+        <field name="code">HR</field>
+        <field name="sequence">40</field>
+    </record>
+</odoo>

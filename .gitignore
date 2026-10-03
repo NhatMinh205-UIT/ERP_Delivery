@@ -1,0 +1,54 @@
+# Odoo/runtime
+odoo/
+odoo-venv/
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+*.secret
+*.token
+
+# Local/agent-only project instructions
+CLAUDE.md
+CLAUDE_ODOO_MASTER_PROMPT.md
+
+# Logs and local database artefacts
+log/
+logs/
+*.log
+*.sql
+*.dump
+*.dump.sql
+database_dumps/
+db_dumps/
+*.sqlite
+*.sqlite3
+*.db
+
+# Test/browser artefacts
+.cache/
+**/.cache/
+.pytest_cache/
+**/.pytest_cache/
+.mypy_cache/
+**/.mypy_cache/
+playwright-report/
+test-results/
+blob-report/
+node_modules/
+
+# Build/coverage/editor artefacts
+.coverage
+htmlcov/
+dist/
+build/
+.idea/
+.vscode/
+*.swp
+*.swo

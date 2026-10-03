@@ -1,0 +1,254 @@
+<odoo>
+    <!-- Extend the shared project.project form. project.project is used by
+         both plain projects and ERP delivery projects, so every element
+         added here is gated behind invisible="not is_erp_delivery" to avoid
+         changing the experience for non-ERP projects. -->
+    <record id="view_project_project_form_erp_delivery" model="ir.ui.view">
+        <field name="name">project.project.form.erp.delivery</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <field name="stage_id" position="after">
+                <field name="state"
+                       widget="statusbar"
+                       invisible="not is_erp_delivery"
+                       statusbar_visible="draft,analysis,implementation,uat,ready,go_live,done"/>
+                <button name="action_start_analysis" string="Start Analysis" type="object"
+                        class="oe_highlight" invisible="not is_erp_delivery or state != 'draft'"/>
+                <button name="action_start_implementation" string="Start Implementation" type="object"
+                        class="oe_highlight" invisible="not is_erp_delivery or state != 'analysis'"/>
+                <button name="action_start_uat" string="Start UAT" type="object"
+                        class="oe_highlight" invisible="not is_erp_delivery or state != 'implementation'"/>
+                <button name="action_ready_go_live" string="Mark Ready for Go-Live" type="object"
+                        class="oe_highlight" invisible="not is_erp_delivery or state != 'uat'"/>
+                <button name="action_go_live" string="Go-Live" type="object"
+                        class="oe_highlight" invisible="not is_erp_delivery or state != 'ready'"/>
+                <button name="action_done" string="Mark Done" type="object"
+                        class="oe_highlight" invisible="not is_erp_delivery or state != 'go_live'"/>
+                <button name="action_cancel" string="Cancel" type="object"
+                        invisible="not is_erp_delivery or state in ('done', 'cancel')"/>
+                <button name="action_reset_to_draft" string="Reset to Draft" type="object"
+                        groups="erp_delivery.group_erp_delivery_manager"
+                        invisible="not is_erp_delivery or state == 'draft'"/>
+            </field>
+            <field name="tag_ids" position="after">
+                <field name="is_erp_delivery"/>
+            </field>
+            <div name="button_box" position="inside">
+                <button class="oe_stat_button" type="object" name="action_view_erp_module_lines"
+                        icon="fa-cubes" invisible="not is_erp_delivery">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value"><field name="module_count"/></span>
+                        <span class="o_stat_text">Modules</span>
+                    </div>
+                </button>
+                <button class="oe_stat_button" type="object" name="action_view_erp_module_lines"
+                        icon="fa-clock-o" invisible="not is_erp_delivery">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value"><field name="total_actual_effort" widget="float_time"/></span>
+                        <span class="o_stat_text">Actual Effort</span>
+                    </div>
+                </button>
+                <button class="oe_stat_button" type="object" name="action_view_erp_mandatory_tasks"
+                        icon="fa-check-square-o" invisible="not is_erp_delivery">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="mandatory_done_count"/> / <field name="mandatory_task_count"/>
+                        </span>
+                        <span class="o_stat_text">Mandatory Tasks</span>
+                    </div>
+                </button>
+            </div>
+            <page name="settings" position="after">
+                <page name="erp_delivery_info" string="Overview" invisible="not is_erp_delivery">
+                    <group>
+                        <group name="erp_delivery_left">
+                            <field name="code" readonly="1"/>
+                            <field name="planned_go_live"/>
+                            <field name="duration_days"/>
+                            <field name="actual_go_live" readonly="1"/>
+                            <field name="health_status" widget="badge"
+                                   decoration-success="health_status == 'green'"
+                                   decoration-warning="health_status == 'amber'"
+                                   decoration-danger="health_status == 'red'"/>
+                        </group>
+                        <group name="erp_delivery_right">
+                            <field name="contract_value" groups="erp_delivery.group_erp_delivery_manager"/>
+                            <field name="customer_code" readonly="1"/>
+                            <field name="member_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                        </group>
+                    </group>
+                </page>
+                <page name="erp_modules" string="Modules" invisible="not is_erp_delivery">
+                    <field name="module_line_ids">
+                        <list editable="bottom">
+                            <field name="solution_id"/>
+                            <field name="consultant_id"/>
+                            <field name="planned_effort"/>
+                            <field name="actual_effort" readonly="1"/>
+                            <field name="price" groups="erp_delivery.group_erp_delivery_manager"/>
+                            <field name="currency_id" column_invisible="True"/>
+                            <field name="state"/>
+                        </list>
+                    </field>
+                </page>
+                <page name="erp_tasks" string="Tasks" invisible="not is_erp_delivery">
+                    <!-- `tasks`, not `task_ids`: the latter has a hardcoded
+                         domain excluding closed tasks on project.project,
+                         which would hide completed work from this tab. -->
+                    <field name="tasks" string="Tasks">
+                        <list editable="bottom">
+                            <field name="name"/>
+                            <field name="module_line_id"/>
+                            <field name="risk_level"/>
+                            <field name="progress_weight"/>
+                            <field name="is_mandatory"/>
+                            <field name="acceptance_state"/>
+                            <field name="erp_actual_hours"/>
+                            <field name="date_deadline"/>
+                            <field name="is_closed" column_invisible="True"/>
+                        </list>
+                    </field>
+                </page>
+                <page name="erp_milestones" string="Milestones" invisible="not is_erp_delivery">
+                    <field name="milestone_ids">
+                        <list editable="bottom">
+                            <field name="name"/>
+                            <field name="deadline"/>
+                            <field name="is_mandatory"/>
+                            <field name="state"/>
+                            <field name="is_reached"/>
+                        </list>
+                    </field>
+                </page>
+                <page name="erp_risks" string="Risks" invisible="not is_erp_delivery">
+                    <field name="risk_ids">
+                        <list editable="bottom"
+                              decoration-danger="level == 'critical'"
+                              decoration-warning="level == 'high'"
+                              decoration-muted="state != 'open'">
+                            <field name="name"/>
+                            <field name="level"/>
+                            <field name="state"/>
+                            <field name="owner_id"/>
+                        </list>
+                    </field>
+                </page>
+                <page name="erp_notes" string="Notes" invisible="not is_erp_delivery">
+                    <field name="note_internal" groups="erp_delivery.group_erp_delivery_manager" placeholder="Internal notes (Manager only)..."/>
+                </page>
+            </page>
+        </field>
+    </record>
+
+    <record id="view_erp_project_list" model="ir.ui.view">
+        <field name="name">project.project.list.erp.delivery</field>
+        <field name="model">project.project</field>
+        <field name="arch" type="xml">
+            <list string="ERP Projects">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="user_id" string="Project Manager"/>
+                <field name="state" widget="badge"
+                       decoration-info="state in ('draft', 'analysis')"
+                       decoration-warning="state in ('implementation', 'uat', 'ready')"
+                       decoration-success="state in ('go_live', 'done')"
+                       decoration-danger="state == 'cancel'"/>
+                <field name="planned_go_live"/>
+                <field name="contract_value" widget="monetary"/>
+                <field name="currency_id" column_invisible="True"/>
+                <field name="health_status" widget="badge"
+                       decoration-success="health_status == 'green'"
+                       decoration-warning="health_status == 'amber'"
+                       decoration-danger="health_status == 'red'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_erp_project_kanban" model="ir.ui.view">
+        <field name="name">project.project.kanban.erp.delivery</field>
+        <field name="model">project.project</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" class="o_kanban_small_column">
+                <field name="state"/>
+                <field name="partner_id"/>
+                <field name="user_id"/>
+                <field name="planned_go_live"/>
+                <field name="health_status"/>
+                <templates>
+                    <t t-name="card">
+                        <div t-attf-class="oe_kanban_card #{record.state.raw_value == 'cancel' ? 'border-danger' : (record.state.raw_value in ['go_live', 'done'] ? 'border-success' : 'border-warning')}">
+                            <div class="d-flex justify-content-between">
+                                <strong><field name="name"/></strong>
+                                <span t-if="record.health_status.raw_value"
+                                      t-attf-class="badge rounded-pill #{record.health_status.raw_value == 'red' ? 'text-bg-danger' : (record.health_status.raw_value == 'amber' ? 'text-bg-warning' : 'text-bg-success')}"
+                                      t-att-title="record.health_status.value">
+                                    <field name="health_status"/>
+                                </span>
+                            </div>
+                            <div><field name="partner_id"/></div>
+                            <div><field name="user_id" widget="many2one_avatar_user"/></div>
+                            <div t-if="record.planned_go_live.raw_value">
+                                <i class="fa fa-flag-checkered me-1" aria-hidden="true" title="Planned Go-Live"/><field name="planned_go_live"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_erp_project_search" model="ir.ui.view">
+        <field name="name">project.project.search.erp.delivery</field>
+        <field name="model">project.project</field>
+        <field name="arch" type="xml">
+            <search string="Search ERP Projects">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="partner_id"/>
+                <field name="user_id" string="Project Manager"/>
+                <separator/>
+                <filter name="my_projects" string="My Projects" domain="[('user_id', '=', uid)]"/>
+                <filter name="my_team_projects" string="My Team Projects" domain="[('member_ids', 'in', [uid])]"/>
+                <separator/>
+                <filter name="go_live_this_month" string="Go-Live This Month"
+                        domain="[('planned_go_live', '&gt;=', context_today().strftime('%Y-%m-01')),
+                                 ('planned_go_live', '&lt;', (context_today() + relativedelta(months=1)).strftime('%Y-%m-01'))]"/>
+                <separator/>
+                <filter name="health_green" string="Green Only" domain="[('health_status', '=', 'green')]"/>
+                <filter name="health_amber" string="Amber Only" domain="[('health_status', '=', 'amber')]"/>
+                <filter name="health_red" string="Red Only" domain="[('health_status', '=', 'red')]"/>
+                <group expand="0" string="Group By">
+                    <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
+                    <filter name="group_health" string="Health" context="{'group_by': 'health_status'}"/>
+                    <filter name="group_pm" string="Project Manager" context="{'group_by': 'user_id'}"/>
+                    <filter name="group_customer" string="Customer" context="{'group_by': 'partner_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_erp_project" model="ir.actions.act_window">
+        <field name="name">Projects</field>
+        <field name="res_model">project.project</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="domain">[('is_erp_delivery', '=', True)]</field>
+        <field name="context">{'default_is_erp_delivery': True}</field>
+        <field name="search_view_id" ref="view_erp_project_search"/>
+    </record>
+
+    <record id="action_erp_project_view_list" model="ir.actions.act_window.view">
+        <field name="sequence">1</field>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="view_erp_project_list"/>
+        <field name="act_window_id" ref="action_erp_project"/>
+    </record>
+
+    <record id="action_erp_project_view_kanban" model="ir.actions.act_window.view">
+        <field name="sequence">2</field>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="view_erp_project_kanban"/>
+        <field name="act_window_id" ref="action_erp_project"/>
+    </record>
+</odoo>

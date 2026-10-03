@@ -1,0 +1,24 @@
+{
+  "started_at": "2026-10-03T12:36:39.381171+07:00",
+  "base_url": "http://127.0.0.1:8169",
+  "database": "erp_ui_test",
+  "tests": {
+    "filter_and_group_by_health": {
+      "status": "PASS",
+      "started_at": "2026-10-03T12:36:56.643071+07:00"
+    },
+    "kanban_health_badge": {
+      "status": "PASS",
+      "started_at": "2026-10-03T12:37:01.613319+07:00"
+    },
+    "risk_open_mitigated_closed": {
+      "status": "PASS",
+      "started_at": "2026-10-03T12:37:02.987729+07:00"
+    },
+    "milestone_state_and_is_reached": {
+      "status": "PASS",
+      "started_at": "2026-10-03T12:37:08.934155+07:00"
+    }
+  },
+  "finished_at": "2026-10-03T12:37:12.422406+07:00"
+}

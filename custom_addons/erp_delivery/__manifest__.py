@@ -1,0 +1,21 @@
+{
+    "name": "ERP Delivery",
+    "version": "18.0.1.0.0",
+    "category": "Services/Project",
+    "summary": "Core ERP implementation delivery management: customers, solution catalog, projects",
+    "author": "Internal Dev Team",
+    "license": "LGPL-3",
+    "depends": ["base", "mail", "project", "contacts"],
+    "data": [
+        "security/erp_delivery_security.xml",
+        "security/ir.model.access.csv",
+        "data/ir_sequence_data.xml",
+        "data/solution_category_data.xml",
+        "data/ir_cron_data.xml",
+        "views/res_partner_views.xml",
+        "views/erp_solution_views.xml",
+        "views/project_project_views.xml",
+        "views/erp_delivery_menus.xml",
+    ],
+    "application": True,
+}
